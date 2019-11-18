@@ -1,0 +1,26 @@
+<div class="position-fixed fixed-bottom ml-auto mr-2" id="chat-container">
+    <div class="row justify-content-end">
+
+        {% for chat in chats %}
+            {% if loop.index < 4 %}
+                <div class="card mr-2 shadow-md px-0 mx-0 chat-window mt-auto{% if not chat.isVisible() %} d-none{% endif %}" id="trip-chat-{{ chat.getTripId() }}" data-trip-id="{{ chat.getTripId() }}">
+                    <div class="card-header p-2 my-0 cursor-pointer chat-header" data-chat-id="{{ chat.getTripId() }}">
+                        <div class="container">
+                            <div class="row">
+                                <span class="pl-2 text-truncate align-middle font-weight-bold col-10">{{ chat.getTitle() }}</span>
+                                <span class="float-right hoverable clickable col-2"><i class="fa fa-times align-middle mr-2 chat-close" data-chat-id="{{ chat.getTripId() }}"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-contents{% if not chat.isOpen() %} d-none{% endif %}" data-chat-id="{{ chat.getTripId() }}">
+                        <div class="card-body pt-0 py-2">
+                            <ul class="chat-messages m-0 p-0">
+                            </ul>
+                        </div>
+                        <textarea spellcheck="false" placeholder="Skriv en melding..." class="p-1 chat-input"></textarea>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

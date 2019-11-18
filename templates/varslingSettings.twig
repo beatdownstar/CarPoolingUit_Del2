@@ -1,0 +1,93 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+<div class="mt-4">
+
+    <div class="container mx-auto row">
+
+
+
+        <section class="col-sm-12 col-md-9">
+
+            {% if isSaved %}
+                <div class="alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    Endringer ble lagret.
+                </div>
+            {% endif %}
+            <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                <div class="p-3 py-sm-4 px-sm-5 bg-white">
+
+                    <h2 class="mb-0">
+                        Innstillinger for varslinger
+                    </h2>
+                    <hr class="my-0">
+
+                    <div class="card-body pb-0 pl-0">
+                        <div class="adminCard pl-10">
+                            <form action="varslingSettings.php" method="post">
+                                <div class="input-group">
+                                    {% for alert in alerts %}
+
+                                        <div class="custom-control custom-checkbox mb-6 mx-0">
+                                            <input type="checkbox" class="custom-control-input alert"
+                                                   data-alert-id="{{ alert.getIsChecked }}"
+                                                   id="alert-{{ alert.getNotificationId() }}"
+                                                   name="location[]" {% if alert.getIsChecked %} checked {% endif %}>
+                                            <label class="custom-control-label not-selectable"
+                                                   for="alert-{{ alert.getNotificationId() }}">{{ alert.getNotificationName() }}</label>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                                <input id="alertHidden" type="hidden" value="" name="alertValue"/>
+                                <input id="alertId" type="hidden" value="{{ alertId }}" name="alertId"/>
+                                <input type="submit" name="saveAlerts" class="btn btn-primary float-lg-right"
+                                       onclick="getCheckBoxValues()" value="Lagre" id="saveAlerts">
+
+                            </form>
+                            <script>
+                                function getCheckBoxValues() {
+                                    var checkboxes = document.getElementsByName('location[]');
+                                    var vals = "";
+                                    for (var i = 0, n = checkboxes.length; i < n; i++) {
+                                        if (checkboxes[i].checked) {
+                                            vals += "," + 1;
+                                        }
+                                        else {
+                                            vals += "," + 0;
+                                        }
+                                    }
+                                    if (vals) vals = vals.substring(1);
+                                    document.getElementById('alertHidden').value = vals;
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="newBrukerTypeModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h6 style="text-align: center">Oppgi brukertype</h6>
+
+                    <form action="userTypesSettings.php" method="post">
+                        <input type="text" class="form-control input-lg"
+                               name="newBrukerType" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary ml-auto mr-auto" name="saveReason">Lagre</button>
+                    <button type="button" class="btn btn-primary ml-auto mr-auto" data-dismiss="modal">Lukk</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

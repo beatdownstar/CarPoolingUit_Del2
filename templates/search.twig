@@ -1,0 +1,162 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    {% set counter = 1 %}
+    {% set previous = false %}
+    {% set pages = (numberOfTrips / 5)|round(0, 'ceil') %}
+
+    <div class="mt-4">
+
+        <div class="container">
+            <h3 class="mb-0 card-title font-weight-bold not-selectable d-inline-block align-middle">Resultater fra {{ showDeparture }} til {{ showDestination }}:</h3>
+        </div>
+
+        <div class="container mt-4">
+            <div class="row">
+                <section class="col-md-3">
+                    <div class="card p-0 shadow-md border-0">
+                        <div class="card-body">
+                            <h6 class="font-weight-bold">Status</h6>
+                            <div class="form-group clear mx-auto mb-4">
+                                <div class="custom-control custom-checkbox mx-0">
+                                    <input type="checkbox" indeterminate="true" class="custom-control-input search-pref" id="search-state-driver">
+                                    <label class="custom-control-label not-selectable" for="search-state-driver">Registrert sjåfør</label>
+                                </div>
+                            </div>
+                            <h6 class="font-weight-bold">Preferanser</h6>
+                            <div class="form-group clear mx-auto">
+                                {%  for pref in prefs %}
+                                    <div class="custom-control custom-checkbox mx-0">
+                                        <input type="checkbox" class="custom-control-input search-pref" id="search-pref-{{ pref.getPrefId() }}">
+                                        <label class="custom-control-label not-selectable" for="search-pref-{{ pref.getPrefId() }}">{{ pref.getPrefDescription() }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <h6 class="font-weight-bold">Fleksibilitet</h6>
+                            <div class="input-group">
+                                <select id="trip-flexibility" name="trip-flexibility" class="custom-select">
+                                    <option value="0">Ingen</option>
+                                    <option value="15">15 minutter</option>
+                                    <option value="30">30 minutter</option>
+                                    <option value="60">1 time</option>
+                                    <option selected value="180">3 timer</option>
+                                    <option value="360">6 timer</option>
+                                    <option value="720">12 timer</option>
+                                    <option value="1440">24 timer</option>
+                                    <option value="2880">48 timer</option>
+                                </select>
+                            </div>
+                        </div>
+                     </div>
+                </section>
+                <section class="col-sm-12 col-md-8">
+                    <form method="post" action="registerTrip.php">
+                        <div class="d-none bg-white justify-content-center align-items-center position-absolute w-100 h-100 overlay" id="loading-overlay">
+                            <div class='spinner-border ml-auto mr-auto'></div>
+                        </div>
+
+                        <ul class="list-group tripRow" id="accordion">
+                            {% block nextPage %}
+                            {% for trip in trips %}
+
+                                {% if previous and previous != trip.getDateOfDeparture().format('d.m.Y') %}
+                                    <br />
+                                    <h4 class="mx-auto">{{ trip.getDateOfDeparture().format('d.m.Y') }}</h4>
+                                {% elseif previous == false %}
+                                    <h4 class="mx-auto">{{ trip.getDateOfDeparture().format('d.m.Y') }}</h4>
+                                {% endif %}
+                                <li class="card pa0 mb4 mb-3"
+                                    name="chooseTrip">
+
+                                    <div class="shadow-md border-0">
+                                        <div class="row align-items-center mt-3">
+
+                                            <div class="form-group ml-4 col-sm-9">
+                                                <!-- <h6>{{ trip.getDateOfDeparture().format('d.m.Y') }}</h6> -->
+                                                <h5>Kl:{{ trip.getDateOfDeparture().format('H:i') }}</h5>
+                                                <div>{{ trip.getDeparturePoint().getAddress() }} <i class="fas fa-long-arrow-alt-right text-black-50 fa-lg d-inline-block align-middle"></i> {{ trip.getDestinationPoint().getAddress() }}</div>
+
+                                                {% if trip.driver.getName() is not null %}
+                                                <div>Sjåfør: {{ trip.driver.getName() }} {{ trip.driver.getSurName() }}</div>
+                                                <div>Ledige seter: {{ trip.driver.getVehicles()[0].NumberOfSeats() - trip.getPassengers()|length }}</div>
+                                                {% else %}
+                                                    <div>Sjåfør: Ingen</div>
+                                                    <div>Ledige seter: N/A</div>
+                                                {% endif %}
+                                            </div>
+                                            <div class="c-border">
+                                            <div class="form-group col px-3">
+                                                <div class="col px-2">
+                                                    <!--<button type="button" class="btn btn-secondary card-link pb-1 pt-1" data-toggle="collapse" href="#collapse{{ counter }}">Info</button> -->
+                                                    <a role="button"  href="tripdetails.php?id={{ trip.getTripId() }}" class="trip-id btn btn-primary pb-1 pt-1">Se mer info</a>
+                                                </div>
+                                                <hr class="my-2 pl-0">
+                                                <div class="form-group col px-2 s-symbol">
+                                                        <i class="fas fa-dog"></i>
+                                                        <i class="ml-2 fas fa-smoking"></i>
+                                                        <i class="ml-2 fas fa-utensils"></i>
+                                                        <i class="ml-2 fas fa-music"></i>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div id="collapse{{ counter }}" class="collapse" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </li>
+                                {% set counter = counter + 1 %}
+                                {% set previous =  trip.getDateOfDeparture().format('d.m.Y') %}
+                            {% endfor %}
+                            {% endblock %}
+                        </ul>
+                        <div class="row">
+                        <button class="btn btn-primary mb-3 ml-3 mr-lg-auto" type="button" id="regNewTrip" name="noThanks">Nei takk - behold min reise</button>
+                           {% if numberOfTrips > 5 %}
+                        <ul class="pagination mr-3 ml-lg-auto">
+                            {% for i in 1..pages  %}
+                                {% if currentPage == i %}
+                                   <li id="page{{ i }}" class="page-item active pageSelect"><a class="page-link pageSelect">{{ i }}</a></li>
+                                {% else %}
+                                    <li id="page{{ i }}" class="page-item pageSelect"><a class="page-link pageSelect">{{ i }}</a></li>
+                                {% endif %}
+                        {% endfor %}
+                               </ul>
+                          {% endif %}
+                        </div>
+                    </form>
+
+            </section>
+        </div>
+        <div class="modal fade" style="padding-top: 120px" id="choosenTrip">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h6>Ønsker du å melde deg på denne reisen?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="new" class="btn btn-default ml-auto" name="newTrip">Ja</button>
+                        <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">lukk</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock %}
+
+{% block bodyscripts %}
+    <script>
+        var departure = '{{ showDeparture|raw }}';
+        var destination = '{{ showDestination|raw }}';
+        var date = '{{ date|raw }}';
+    </script>
+    <script src="js/Search.js"></script>
+    <script src="js/notification.js"></script> {# testing #}
+{% endblock %}

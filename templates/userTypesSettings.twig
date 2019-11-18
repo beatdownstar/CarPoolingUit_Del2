@@ -1,0 +1,108 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+<div class="mt-4">
+
+    <div class="container mx-auto row">
+        <section class="col-sm-4 col-md-4">
+
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h2 class="mb-0">
+                            Brukertyper
+                        </h2>
+                        <hr class="my-0">
+                        <div class="card-body pb-0 pl-0">
+                            <div class="adminCard pl-0">
+
+                                {% for type in typeNames %}
+                                <div class="input-group">
+                                    <i class="fas fa-user"></i><a class="adminLink" href="userTypesSettings.php?userTypeId={{ type.getType_id() }}"><h6
+                                                class="pl-2">{{ type.getType() }}</h6></a>
+                                </div>
+                                {% endfor %}
+                                <div class="form-inline">
+                                   <a class="nav-link headlinker loginLink mr-auto" href="#newBrukerTypeModal" data-toggle="modal" style="color:#007BFF;"><i class="fas fa-plus"></i> Legg til ny brukertype</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        </section>
+        <section class="col-sm-12 col-md-5">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0 ml-2">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h2 class="mb-0">
+                            Rettigheter for {{ brukertypenavn }}
+                        </h2>
+                        <hr class="my-0">
+                        <div class="card-body pb-0 pl-0">
+                            <div class="adminCard pl-0">
+                                <form action="userTypesSettings.php" method="post">
+                                    <div class="input-group">
+                                        {% for permission in permissions %}
+
+                                            <div class="custom-control custom-checkbox mb-3 mx-0">
+                                                <input type="checkbox" class="custom-control-input perm"
+                                                       data-permission-id="{{ permission.getIsChecked }}"
+                                                       id="perm-{{ permission.getPermissionId() }}"
+                                                       name="location[]" {% if permission.getIsChecked %} checked {% endif %}>
+                                                <label class="custom-control-label not-selectable"
+                                                       for="perm-{{ permission.getPermissionId() }}">{{ permission.getPermissionName() }}</label>
+                                            </div>
+                                        {% endfor %}
+
+                                    </div>
+                                    <input id="permHidden" type="hidden" value="" name="permValue"/>
+                                    <input id="permId" type="hidden" value="{{ permId }}" name="permId"/>
+                                    <input type="submit" name="savePermissions" class="btn btn-primary float-lg-right"
+                                           onclick="getCheckBoxValues()" value="Lagre" id="savePermissions">
+
+                                </form>
+                                <script>
+                                    function getCheckBoxValues() {
+                                        var checkboxes = document.getElementsByName('location[]');
+                                        var vals = "";
+                                        for (var i = 0, n = checkboxes.length; i < n; i++) {
+                                            if (checkboxes[i].checked) {
+                                                vals += "," + 1;
+                                            }
+                                            else {
+                                                vals += "," + 0;
+                                            }
+                                        }
+                                        if (vals) vals = vals.substring(1);
+                                        document.getElementById('permHidden').value = vals;
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </section>
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="newBrukerTypeModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h6 style="text-align: center">Oppgi brukertype</h6>
+
+                <form action="userTypesSettings.php" method="post">
+                    <input type="text" class="form-control input-lg"
+                           name="newBrukerType" required>
+                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary ml-auto mr-auto" name="saveReason">Lagre</button>
+                        <button type="button" class="btn btn-primary ml-auto mr-auto" data-dismiss="modal">Lukk</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+

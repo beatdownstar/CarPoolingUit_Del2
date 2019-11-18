@@ -1,0 +1,230 @@
+<nav class="bg-white navbar navbar-expand-lg navbar-light bg-light shadow-sm border border-top">
+    <h3 id="sideBar" class="fa fa-fw fas fa-cog cursor-pointer mt-2"></h3>
+    <div class="container py-2">
+        <a class="navbar-brand" href="index.php">
+                <span>
+                    <img style="width:240px;height:32px;" src="img/Navnetrekk_norsk.svg" alt="UiT Samkjøring">
+                </span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto d-none">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+
+                <a class="nav-link" href="infoAboutSystem.php" >
+                    <i class="far fa-question-circle"></i>
+                </a>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link" href="#" id="chatMessagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-comment"></i>
+                    </a>
+                    <ul class="dropdown-menu custom-dropdown py-0 shadow-sm" aria-labelledby="chatMessagesDropdown">
+                        <li class="card-header bg-white">
+                            <h6 class="mb-0 card-title font-weight-bold not-selectable">Samtaler</h6>
+                        </li>
+
+                        <li class="chat-modal-item hover-gray">
+                            <div class="container">
+                                <div class="d-flex align-items-center py-3 cursor-pointer">
+                                    <img src="img/avatar-placeholder.svg"
+                                         class="rounded-circle col-2">
+                                    <div class="col-10 px-0">
+                                        <div class="col-12 chat-modal-text">
+                                            <span class="font-weight-bold ">Tørketrommelseminar</span>
+                                        </div>
+                                        <div class="col-12 chat-modal-text">
+                                            <small class="text-muted">Sven-Kåre: Siste melding fra samtalen. Lorem ipsum etc. etc. 123 hallo okei hei. </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="chat-modal-item hover-gray">
+                            <div class="container">
+                                <div class="d-flex align-items-center py-3 cursor-pointer">
+                                    <img src="img/avatar-placeholder.svg"
+                                         class="rounded-circle col-2">
+                                    <div class="col-10 px-0">
+                                        <div class="col-12 chat-modal-text">
+                                            <span class="font-weight-bold ">Strikkekurs</span>
+                                        </div>
+                                        <div class="col-12 chat-modal-text">
+                                            <small class="text-muted">Bernt: Siste melding fra samtalen. Lorem ipsum etc. etc. 123 hallo okei hei. </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i>
+                        {{ session.getFullName() }}
+                        {#  {% if user is defined and user is not null %}
+                            {{ user.getEpost() }}
+                        {% else %}
+                            {{ email }}
+                        {% endif %}#}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="profile.php">Min profil</a>
+                        <a class="dropdown-item" href="showMyTrips.php">Mine reiser</a>
+                        <a class="dropdown-item" href="varslingSettings.php">Innstillinger</a>
+                        <a class="dropdown-item" href="sendFeedback.php">Send tilbakemelding</a>
+                        <a class="dropdown-item" href="administratorTools.php">Administrator verktøy</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="logout.php">Logg ut</a>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+<div class="bg-white navbar-light bg-light admin-navbar shadow-md border-0 h-100 ">
+    <h3 class="float-right pr-3 cursor-pointer" id="closeBar">&times;</h3>
+    <div class="admin-menu pt-3 pl-3 ">
+        <h3 class="fa fa-fw fas fa-cog mt-2">Verktøy</h3>
+    </div>
+    <hr class="my-3">
+    <div class="admin-menu form-group pt-3 pl-3">
+        <div class="form-group arrow" role="button" data-toggle="collapse1" data-target="#collapse">
+            <a class="menuLink" data-toggle="collapse" href="#collapse1"><i class="fa fa-fw fa-user"></i>
+                Brukere<i class="fas fa-caret-left float-right mr-3 mt-1"></i></a>
+
+        </div>
+
+        <div id="collapse1" class="panel-collapse collapse">
+            <div class="card-body pt-1 pl-4 inner-menu form-group">
+                <div class="form-group">
+                    <a href="createUser.php" class="menuLink">Opprett bruker</a>
+                </div>
+
+                <div class="form-group">
+                    <a href="editUser.php" class="menuLink">Rediger bruker</a>
+                </div>
+                <div class="form-group">
+                    <a href="banUser.php" class="menuLink">Blokker bruker</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group arrow" role="button" data-toggle="collapse" data-target="#collapse2">
+            <a href="#" class="menuLink"><i class="fa fa-fw fa-wrench"></i> Rettigheter<i class="fas fa-caret-left float-right mr-3 mt-1"></i></a>
+        </div>
+
+        <div id="collapse2" class="panel-collapse collapse">
+            <div class="card-body pt-1 pl-4 inner-menu form-group">
+                <div class="form-group">
+                    <a href="#" class="menuLink">Opprett grupper</a>
+                </div>
+
+                <div class="form-group">
+                    <a href="#" class="menuLink">Rediger grupper</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group arrow" role="button" data-toggle="collapse" data-target="#collapse3">
+            <a href="#" class="menuLink"><i class="fa fa-fw fa-taxi"></i> Reiser<i class="fas fa-caret-left float-right mr-3 mt-1"></i></a>
+        </div>
+
+        <div id="collapse3" class="panel-collapse collapse">
+            <div class="card-body pt-1 pl-4 inner-menu form-group">
+                <div class="form-group">
+                    <a href="editTrips.php" class="menuLink">Rediger reiser</a>
+                </div>
+
+                <div class="form-group">
+                    <a href="#" class="menuLink">Slett reiser</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group arrow" role="button" data-toggle="collapse" data-target="#collapse4">
+            <a href="#clients" class="menuLink"><i class="fa fa-fw fa-heart"></i> Preferanser<i class="fas fa-caret-left float-right mr-3 mt-1"></i></a>
+        </div>
+
+        <div id="collapse4" class="panel-collapse collapse">
+            <div class="card-body pt-1 pl-4 inner-menu form-group">
+                <div class="form-group">
+                    <a href="newPreference.php" class="menuLink">Opprett preferanse</a>
+                </div>
+
+                <div class="form-group">
+                    <a href="editPreference.php" class="menuLink">Rediger preferanse</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group arrow" role="button" data-toggle="collapse" data-target="#collapse5">
+            <a href="#" class="menuLink"><i class="fa fa-fw fa-envelope"></i> Meldinger<i class="fas fa-caret-left float-right mr-3 mt-1"></i></a>
+        </div>
+
+        <div id="collapse5" class="panel-collapse collapse">
+            <div class="card-body pt-1 pl-4 inner-menu form-group">
+                <div class="form-group">
+                    <a href="usersFeedbacks" class="menuLink">Tilbakemeldinger</a>
+                </div>
+
+                <div class="form-group">
+                    <a href="reportedUsers.php" class="menuLink">Rapporterte brukere</a>
+                </div>
+                <div class="form-group">
+                    <a href="createReason.php" class="menuLink">Opprett blokkering grunn</a>
+                </div>
+                <div class="form-group">
+                    <a href="editReason.php" class="menuLink">Rediger blokkering grunn</a>
+                </div>
+                <div class="form-group">
+                    <a href="createQuestion.php" class="menuLink">Opprett ofte stilt spørsmål</a>
+                </div>
+                <div class="form-group">
+                    <a href="editQuestion.php" class="menuLink">Rediger ofte stilt spørsmål</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group arrow" role="button" data-toggle="collapse" data-target="#collapse6">
+            <a href="#" class="menuLink"><i class="fa fa-fw fa-chart-line"></i> Statistikk<i class="fas fa-caret-left float-right mr-3 mt-1"></i></a>
+        </div>
+
+        <div id="collapse6" class="panel-collapse collapse">
+            <div class="card-body pt-1 pl-4 inner-menu form-group">
+                <div class="form-group">
+                    <a href="#services" class="menuLink">Opprett bruker</a>
+                </div>
+
+                <div class="form-group">
+                    <a href="#services" class="menuLink">Rediger bruker</a>
+                </div>
+                <div class="form-group">
+                    <a href="#services" class="menuLink">Blokker bruker</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block bodyscripts %}
+    <script src="js/jquery-3.3.1.min.js"></script>
+     <script src="js/sideBar.js"></script>
+{% endblock %}

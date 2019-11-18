@@ -1,0 +1,51 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+<div class="container" style="max-width: 400px; padding-top: 75px;">
+    <h3>Registrering</h3>
+
+    <form action="registration.php" method="post" id="regForm">
+        <div class="form-group">
+            <label>Name</label>
+            <input id="nameReg" type="text" class="form-control" name="userNameReg" placeholder="Skriv inn navn" required>
+        </div>
+        <div class="form-group">
+            <label>Surname</label>
+            <input id="surnameReg" type="text" class="form-control" name="userSurnameReg" placeholder="Skriv inn etternavn"
+                   required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input id="changePass" type="password" class="form-control" name="passwordReg" placeholder="Skriv inn passord"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <input id="changePassRepeat" type="password" class="form-control" name="repeatPasswordReg" placeholder="Gjenta passord"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Email address</label>
+            <input id="emailReg" type="email" class="form-control" name="epostReg" placeholder="Skriv inn epost" id="emailCheck"
+                   required>
+        </div>
+        <h6 id="error"></h6>
+        {% if emailExists %}
+            <h6 id="error" style="color: orange">Epost eksisterer allerede, tast inn andre epost eller logg inn</h6>
+        {% endif %}
+        <input id="submit" type="submit" class="btn btn-primary " name="userRegistration" value="Registrer" >
+
+    </form>
+</div>
+
+
+
+{% endblock %}
+
+    {% block bodyscripts %}
+
+        <script src="js/ValidatePassword.js"></script>
+
+    {% endblock %}

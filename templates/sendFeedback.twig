@@ -1,0 +1,106 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+        <div class="container px-0">
+            <div class="col-10">
+                {% if feedbackSent %}
+                    <div class="ml-3 col-9 alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        Tilbakemelding ble sendt.
+                    </div>
+                {% endif %}
+            </div>
+            <section class="col-sm-12 col-md-8">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h1 class="mb-0">
+                            Send tilbakemelding
+                        </h1>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body pb-0">
+                        <form action="sendFeedback.php" method="post">
+
+                            <div class="form-group">
+
+                        <textarea id="sendFeedbackText" maxlength="250" class="form-control input-lg"
+                                  name="feedbackText" required placeholder="Skriv tekst..." style="height:150px" onKeyUp="checkLength()"></textarea>
+
+                                <span id="checkSymbols" style="float: right">0/250</span>
+
+
+                            </div>
+
+                            <script>
+                            var txt = document.getElementById("sendFeedbackText");
+                            var maxLength = 250;
+                            var count = document.getElementById("checkSymbols");
+                            var checkLength = function(){
+                            if(txt.value.length <= maxLength) {
+                            count.innerHTML =  txt.value.length+"/250"
+                            }
+                            };
+                            </script>
+                            <div class="mt-4">
+                            <div class="form-group float-right">
+
+                                <button type="submit" class="btn btn-primary ml-1 mt-0" name="btnFeedback">
+                                   Send
+                                </button>
+
+                            </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="editPrefModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h6 style="text-align: center">Rediger preferanse</h6>
+
+                    <form action="editPreference.php" method="post">
+                        <input type="text" class="form-control input-lg"
+                               value="{{ description }}" name="editPrefDescription" required>
+                        <input type="hidden" name="prefIdModal" value="{{ pref_id }}"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary ml-auto mr-auto" name="savePreference">Lagre</button>
+                    <button type="button" class="btn btn-primary ml-auto mr-auto" data-dismiss="modal">Lukk</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="deletePrefModal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="editPreference.php" method="post">
+                        <h6 style="text-align: center">Vil du slette preferansen '{{ description }}'?</h6>
+
+                        <input type="hidden" name="prefIdDeleteModal" value="{{ pref_id }}"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary ml-auto mr-auto" name="saveDeletedPreference">Yes</button>
+                    <button type="button" class="btn btn-primary ml-auto mr-auto" data-dismiss="modal">No</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block bodyscripts %}
+    <script src="js/dataTables.js"></script>
+{% endblock %}
+

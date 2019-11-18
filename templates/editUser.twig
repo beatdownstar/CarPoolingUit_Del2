@@ -1,0 +1,137 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+        <div class="container px-0">
+            <section class="col-sm-12 col-md-12" id="showUser">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb-4 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h1 class="mb-0">
+                            Rediger bruker
+                        </h1>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body pb-0">
+                        <form action="editUser.php" method="post">
+
+                            <table class="table table-bordered table-hover" id="mytable">
+                                <thead>
+                                <tr>
+                                    <th>Fornavn</th>
+                                    <th>Etternavn</th>
+                                    <th>Email</th>
+                                    <th>Feide bruker</th>
+                                    <th>Brukertype</th>
+                                    <th>Campus</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in users %}
+
+                                    <tr class="userInfo" data-id="{{ user.userId }}">
+                                        <td>{{ user.name }}</td>
+                                        <td>{{ user.surname }}</td>
+                                        <td>{{ user.epost }}</td>
+                                        <td data-id="{{ user.getFeideUser() }}">{% if user.getFeideUser()==1 %}Ja
+                                            {% else %}
+                                                Nei
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ user.getUserTypeId().getType() }}</td>
+                                        <td>{{ user.getCampusId().getDep_name() }}</td>
+                                    </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+                                <button type="button" class="btn btn-secondary" name="back"><a href="administratorTools.php" class="linkButton">Tilbake</a></button>
+                                <button type="button" class="btn btn-primary float-right" id="chooseUser" disabled>Velg</button>
+                                <button type="button" class="btn btn-danger float-right mr-2" data-toggle="modal" data-target="#choosenUser" disabled id="delChoose">Slett</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            <section class="col-sm-12 col-md-8" id="editUser">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h1 class="mb-0">
+                            Rediger bruker
+                        </h1>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body pb-0">
+                        <h6 id="feideWarning" class="alert alert-warning" role="alert">Denne brukeren er knyttet til feide. Bare bruker-rettigheter kan endres</h6>
+                        <div class="form-inline">
+                        <i class="fas fa-user" style="font-size: 1.75em;"></i>
+                            <h4 id="name" class="pl-2 mt-1"></h4>
+                        </div>
+
+
+                        <br />
+                        <form method="post">
+                            <div class="form-group form-inline">
+                                <input id="firstName" type="text" class="form-control col px-6" placeholder="Fornavn" name="firstName" required/>
+                                <input id="lastName" type="text" class="form-control ml-2 col-6" placeholder="Etternavn" name="surName" required/>
+                            </div>
+                            <div class="form-group">
+                                <input id="email" type="text" class="form-control" placeholder="Email" name="email" required/>
+                            </div>
+                            <br />
+                            <label id="passLabel" class="checkbox-inline pl-1"><input id="passcheck" type="checkbox" name="passcheck" class="">Endre passord</label>
+                            <div class="form-group form-inline">
+                                <input id="changePass" type="password" class="form-control col px-6 password" placeholder="Passord" name="password" disabled />
+                                <input id="changePassRepeat" type="password" class="form-control ml-2 col-6 password" placeholder="Gjenta passord" name="rePassword" disabled />
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="userType">
+                                    <option>Velg brukertype</option>
+                                    {% for userType in userTypes %}
+                                        <option value="{{ userType.getType_id() }}">{{ userType.getType() }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <h6 id="error"></h6>
+                            <br />
+                            <div class="form-group">
+                                <button type="button" class="btn btn-secondary" name="username" id="previous">Tilbake</button>
+                                <input id="submit" type="submit" class="btn btn-primary " name="enter" value="Oppdater">
+                            </div>
+                            <input id="userId" type="hidden" value="" name="userId"/>
+                        </form>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="choosenUser">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h6>Vil du virkelig slette denne brukeren?</h6>
+                </div>
+                <form method="post">
+                    <div class="modal-footer">
+                        <button type="button" id="remove" class="btn btn-default ml-auto" name="delUser" data-dismiss="modal">Ja</button>
+                        <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">lukk</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block bodyscripts %}
+    <script src="js/dataTables.js"></script>
+    <script src="js/ValidatePassword.js"></script>
+    <script>
+        $(document).ready(function() {
+            table = $('#mytable').DataTable();
+        } );
+    </script>
+{% endblock %}

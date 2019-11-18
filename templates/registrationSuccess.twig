@@ -1,0 +1,27 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+        <section class="container px-0">
+
+            <section class="col-sm-12 col-md-8 px-0 px-sm-4 rounded">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h1 class="mb-0">
+                            Gratulerer, din profil er aktivert og du kan <a href="login.php">logge inn!!</a>
+                        </h1>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </div>
+
+{% endblock %}
+
+    {% block bodyscripts %}
+
+        <script src="js/RegistrationSuccess.js"></script>
+
+    {% endblock %}

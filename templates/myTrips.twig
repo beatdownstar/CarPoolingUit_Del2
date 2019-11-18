@@ -1,0 +1,121 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+    {#
+    {% if chats is defined %}
+        {{ chats|length }}
+    {% else %}
+        nei
+    {% endif %}
+    #}
+    <div class="mt-4">
+        <div class="container px-0">
+            <section class="col-sm-12 col-md-8">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="card-header p-3 py-sm-4 bg-white">
+                        <h4 class="mb-0 card-title font-weight-bold not-selectable">
+                            Mine reiser
+                        </h4>
+                    </div>
+                    <div class="card-body pb-0">
+                        <ul class="nav nav-tabs" id="trip_nav">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab1">Mine reiser</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab2">Tidligere reiser</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab3">Instillinger</a></li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade show active" role="tabpanel" id="tab1">
+                    <div class="card-body pb-0 mb-5" >
+
+                        <ul class="list-group">
+                            {% for trip in myTrips %}
+
+                                <a href="tripdetails.php?id={{ trip.getTripId() }}" class="card pa0 mb4 mb-3 select" name="chooseTrip">
+                                    <div class="shadow-md border-0">
+                                        <div class="row align-items-center mt-3">
+
+                                            <div class="form-group ml-4 col-sm-8">
+                                                 <h5>{{ trip.getDateOfDeparture().format('d.m.Y') }}</h5>
+                                                <div>Kl:{{ trip.getDateOfDeparture().format('H:i') }}</div>
+                                                <div>{{ trip.getDeparturePoint().getAddress() }} <i class="fas fa-long-arrow-alt-right text-black-50 fa-lg d-inline-block align-middle"></i> {{ trip.getDestinationPoint().getAddress() }}</div>
+                                                {% if trip.driver.getName() is not null %}
+                                                    <div>Sjåfør: {{ trip.driver.getName() }} {{ trip.driver.getSurName() }}</div>
+                                                    <div>Ledige seter: {{ trip.driver.getVehicles()[0].NumberOfSeats() - trip.getPassengers()|length }}</div>
+                                                {% else %}
+                                                    <div>Sjåfør: Ingen</div>
+                                                    <div>Ledige seter: N/A</div>
+                                                {% endif %}
+                                            </div>
+
+                                            <div id="collapse{{ counter }}" class="collapse" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                    <div class="tab-pane fade show" role="tabpanel" id="tab2">
+                        <div class="card-body pb-0 mb-5" >
+
+                            <ul class="list-group">
+                                {% for trip in myDelTrips %}
+                                    <div class="card pa0 mb4 mb-3" >
+                                        <div class="shadow-md border-0">
+                                            <div class="row align-items-center mt-3">
+
+                                                <div class="form-group ml-4 col-sm-8">
+                                                    <h5>{{ trip.getDateOfDeparture().format('d.m.Y') }}</h5>
+                                                    <div>Kl:{{ trip.getDateOfDeparture().format('H:i') }}</div>
+                                                    <div>{{ trip.getDeparturePoint().getAddress() }} <i class="fas fa-long-arrow-alt-right text-black-50 fa-lg d-inline-block align-middle"></i> {{ trip.getDestinationPoint().getAddress() }}</div>
+                                                    {% if trip.driver.getName() is not null %}
+                                                        <div>Sjåfør: {{ trip.driver.getName() }} {{ trip.driver.getSurName() }}</div>
+                                                        <div>Ledige seter: {{ trip.driver.getVehicles()[0].NumberOfSeats() - trip.getPassengers()|length }}</div>
+                                                    {% else %}
+                                                        <div>Sjåfør: Ingen</div>
+                                                        <div>Ledige seter: N/A</div>
+                                                    {% endif %}
+                                                </div>
+
+                                                <div id="collapse{{ counter }}" class="collapse" data-parent="#accordion">
+                                                    <div class="card-body">
+                                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div class="modal fade" style="padding-top: 120px" id="choosenTrip">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h6>Ønsker du å melde deg av denne reisen?</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="del" class="btn btn-default ml-auto" name="delTrip">Ja</button>
+                        <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">lukk</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block bodyscripts %}
+    <script src="js/Search.js"></script>
+{% endblock %}

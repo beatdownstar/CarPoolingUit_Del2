@@ -1,0 +1,163 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+
+    <div class="mt-4">
+        <div class="container mx-auto row">
+            <div class="col-10">
+            {% if userRapported %}
+                <div class="ml-3 col-9 alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    Brukeren ble rapportert.
+                </div>
+            {% endif %}
+            </div>
+            <section class="col-sm-12 col-md-8 px-0 mx-0 pr-md-3">
+                <div class="card p-0 shadow-md border-0">
+                    <div class="card-header p-3 py-sm-4 bg-white">
+                        <div class="justify-content-center align-content-center">
+                            <h4 class="mb-0 card-title font-weight-bold not-selectable d-inline align-middle">Info om Medreisende</h4>
+
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <img src="showUserImage.php?user_id={{ userinfo.UserId() }}" class="rounded mx-auto d-block" alt="..." width="200"
+                             height="200">
+
+                    <div class="form-group clear">
+                        <div class="row">
+                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto">
+                                Fornavn
+                            </label>
+
+                            <div class="col-lg-7 relative text-justify">
+                                {{ userinfo.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group clear mb-4">
+                        <div class="row">
+                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                Etternavn
+                            </label>
+                            <div class="col-lg-7 relative text-justify">
+                                {{ userinfo.surname }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group clear mb-4">
+                        <div class="row">
+                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                Campus
+                            </label>
+                            <div class="col-lg-7 relative text-justify">
+                                {% for campus in points %}
+                                    {% if userinfo.campusId == campus.PointId %}
+                                        {% set campus_splitted = campus.PointName|split(' ') %}
+                                        {{ campus_splitted[1] }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group clear mb-4">
+                        <div class="row">
+                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                E-post
+                            </label>
+                            <div class="col-lg-7 relative text-justify">
+                                {{ userinfo.epost }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group clear mb-4">
+                        <div class="row">
+                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                Telefonnummer
+                            </label>
+                            <div class="col-lg-7 relative text-justify">
+                                {{ userinfo.TelNumber }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-auto float-right"><!---->
+                        <button class="btn btn-secondary ml-1 mt-0 " onclick="history.back()">
+                            Tilbake
+                        </button>
+                    </div>
+                        <form action="infoOmMedreisende.php" method="post">
+                        <div class="mb-auto float-right"><!---->
+                            <button type="button" class="btn btn-danger ml-1 mt-0" name="rapportUser" data-toggle="modal" data-target="#rapportUserModal">
+                                Rapportere
+                            </button>
+                        </div>
+                        </form>
+                    </div>
+
+            </section>
+        </div>
+    </div>
+
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="rapportUserModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6>Rapporter bruker</h6>
+                </div>
+                <form action="infoOmMedreisende.php" method="post">
+                    <div class="modal-body">
+                    <div class="form-group">
+                        <label>Oppgi grunnen til å rapportere</label>
+
+                        <select class="custom-select" name="reasonToRapport">
+
+                            {% for reason in reasons %}
+
+                                <option>{{ reason.ReasonDescription }}</option>
+
+                            {% endfor %}
+
+                        </select>
+                    </div>
+                        <div class="form-group">
+                        <textarea id="userReportText" maxlength="200" class="form-control input-lg"
+                           name="userRapportComment" required placeholder="Oppgi kommentar" onKeyUp="checkLength()"></textarea>
+
+                            <span id="count" style="float: right">0/200</span>
+
+                        </div>
+                    <input type="hidden" name="rapportedUserId" value="{{ user_id }}"/>
+
+                        <script>
+                            var txt = document.getElementById("userReportText");
+                            var maxLength = 200;
+                            var count = document.getElementById("count");
+                            var checkLength = function(){
+                                if(txt.value.length <= maxLength) {
+                                    count.innerHTML =  txt.value.length+"/200"
+                                }
+                            };
+                        </script>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary ml-auto mr-auto" name="sendRapportUser">Rapportere</button>
+                        <button type="button" class="btn btn-default ml-auto mr-auto" data-dismiss="modal">Lukk</button>
+                    </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+

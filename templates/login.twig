@@ -1,0 +1,126 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="container pt-5 login-width">
+
+        {% if recoverEpostSent %}
+            <div class="col-12 alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Lenken for å gjenopprette passord ble sendt til din epost adresse.
+            </div>
+        {% endif %}
+
+        {% if newPassword %}
+            <div class="col-12 alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Ditt passord ble gjenopprettet, nå kan du logge inn.
+            </div>
+        {% endif %}
+
+        {% if epostNoExist %}
+            <div class="col-12 alert alert-success alert-dismissible">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                Epost adresse eksisterer ikke, prøv på nytt.
+            </div>
+        {% endif %}
+        <div class="d-flex justify-content-center mb-3">
+            <img src="img/feide_logo.png" class="img-responsive" alt="Responsive image" height="70" width="70"/>
+            <h3 class="pt-3 pb-4 ml-2"><strong>UiT Samkjøringsportal</strong></h3>
+        </div>
+
+        <h4 class="pb-4 text-center"><strong>Logg inn for å samkjøre</strong></h4>
+
+        <div class="card border-bottom-1 br1-bottom-sm p-0 mb-4 mb6-md shadow-md border-0">
+            <div class="card-body">
+                <a href="feideLogin.php" role="button" class="btn btn-outline-secondary btn-block cursor-pointer" name="feide">
+                    <img src="img/feide_logo2.png" class="img-responsive" alt="Responsive image" height="30"
+                         width="35"/><strong class="pl-2">Logg inn med feide</strong>
+                </a>
+            </div>
+            <hr class="">
+            <div class="card-body">
+                <form action="login.php" method="post">
+                    <div class="form-group">
+                        <input id="user" type="text" class="form-control" placeholder="Brukernavn" name="username"/>
+                    </div>
+                    <div class="form-group">
+                        <input id="pass" type="password" class="form-control" placeholder="Passord" name="password">
+                    </div>
+                    <h6 id="error" style="color: orange"></h6>
+                    {% if error %}
+                        <h6 id="error" style="color: orange">Feil brukernavn eller passord</h6>
+                    {% elseif banned %}
+                        <h6 id="error" style="color: orange">Denne brukeren har ikke verifisert account eller er
+                            deaktivert </h6>
+                    {% endif %}
+                    <input id="ent" type="submit" class="btn btn-primary btn-block" name="enter" value="Logg inn">
+                </form>
+            </div>
+        </div>
+
+        <div class="form-inline">
+            <a class="nav-link headlinker loginLink ml-auto" href="registration.php">Registrer deg</a>
+            <a class="nav-link headlinker loginLink mr-auto" href="#recoverPasswordModal" data-toggle="modal">Glemt passord?</a>
+        </div>
+
+    </div>
+    <div class="modal fade" id="regPlus" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered successreg" role="document">
+            <div class="modal-content alonemodal">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="form-group bigfont">
+                        <label>Gratulerer, du registrerte vellykket, verifikasjon linken ble sendt til epost, åpne den
+                            for å aktivere din account.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aktivPlus" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered successreg" role="document">
+            <div class="modal-content alonemodal">
+                <div class="modal-body">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <div class="form-group bigfont">
+                        <label>Gratulerer, du har aktivert din profil, nå kan du logge inn!</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="recoverPasswordModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h6 style="text-align: center">Oppgi epost for å gjenopprette passord</h6>
+
+                    <form action="recoverPassword.php" method="post">
+                        <input type="email" class="form-control input-lg"
+                               name="recoverPassEpost" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary ml-auto mr-auto" name="sendRecoverEmail">Ok</button>
+                    <button type="button" class="btn btn-primary ml-auto mr-auto" data-dismiss="modal">Lukk</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block bodyscripts %}
+     <script src="js/ValidateLogin.js"></script>
+{% endblock %}

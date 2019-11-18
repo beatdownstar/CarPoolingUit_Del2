@@ -1,0 +1,325 @@
+{% extends 'main.twig' %}
+{% block content %}
+    <div>
+        <div class="container py-4 d-flex justify-content-between align-content-center">
+            <div class="mr-2">
+                <h3 class="mb-0 card-title font-weight-bold not-selectable d-inline-block align-middle">{{ trip.getDeparturePoint().getAddress() }}</h3>
+                <i class="fas fa-long-arrow-alt-right text-black-50 fa-lg d-inline-block align-middle"></i>
+                <h3 class="mb-0 card-title font-weight-bold not-selectable d-inline-block align-middle">{{ trip.getDestinationPoint().getAddress() }}</h3>
+                <p class="mb-0">{{ trip.getDateOfDeparture().format('d/m/Y, H:i') }}</p>
+            </div>
+            <div class="h-100 d-flex">
+                <button class="btn btn-outline-primary toggle-chat text-nowrap mr-1" data-chat-id="{{ trip.getTripId() }}">Chat</button>
+
+
+                {% if userAssignedToTrip %}
+                <button data-id="{{ trip.getTripId() }}" data-toggle="modal" data-target="#choosenTrip"
+                        class="trip-id btn btn-outline-danger text-nowrap" >Meld av
+                </button>
+                {% else %}
+                <button data-id="{{ trip.getTripId() }}" data-toggle="modal" data-target="#choosenTrip" class="trip-id btn btn-outline-success text-nowrap">
+                    Meld på
+                </button>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="container mx-auto row">
+            <section class="col-sm-12 col-md-8 px-0 mx-0 pr-md-3">
+                <div class="card p-0 shadow-md border-0 mb-3">
+                    <div class="card-header p-3 py-sm-4 bg-white">
+                        <div class="justify-content-center align-content-center">
+                            <h5 class="mb-0 card-title font-weight-bold not-selectable">Rute</h5>
+                        </div>
+
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <span class="font-weight-bold my-auto">
+                                        Avgang
+                                    </span>
+                                </div>
+                                <div class="col-12 col-md-7">
+                                    <span>{{ trip.getDateOfDeparture().format('H:i') }}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <span class="font-weight-bold my-auto">
+                                        Reisetid
+                                    </span>
+                                </div>
+                                <div class="col-12 col-md-7">
+                                    {% if trip.getTravelTime() is null %}
+                                        {% set reisetid = 1 + random(7) %}
+                                        <span>{{ reisetid }} time{% if reisetid > 1 %}r{% endif %}</span>
+                                    {% else %}
+                                        <span>{{ trip.getTraveltimeFormat() }} </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <span class="font-weight-bold my-auto">
+                                        Ankomst
+                                    </span>
+                                </div>
+                                <div class="col-12 col-md-7">
+                                    <span>{{ trip.getLatestArrivalDate().format('H:i') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="card p-0 shadow-md border-0 mb-3" id="loading-overlay">
+                    <div class="card-header p-3 py-sm-4 bg-white">
+                        <h5 class="mb-0 card-title font-weight-bold not-selectable">Detaljer</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <i class="far fa-user"></i>
+                                    <span class="font-weight-bold ml-2">Sjåfør</span>
+                                </div>
+                                <div class="col-12 col-md-7">
+                                    {% set driver = trip.getDriver() %}
+                                    {% if user.getUserId() == driver.getUserId() or driver is null and userAssignedToTrip %}
+                                    <ul class="navbar-nav">
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle py-0" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {% if driver is not null %}{{ driver.getName() }} {{ driver.getSurName() }}{% else %}Ingen sjåfør{% endif %}
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                {% if driver is not null %}
+                                                    <a class="dropdown-item cursor-pointer" data-id="{{ trip.getTripId() }}" id="removeDriver">Avregistrer</a>
+                                                {% else %}
+                                                    <a class="dropdown-item cursor-pointer" data-id="{{ trip.getTripId() }}" id="becomeDriver">Bli sjåfør</a>
+                                                {% endif %}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    {% else %}
+                                        <span>{% if driver is null %}-{% else %}{{ driver.getName() }} {{ driver.getSurName() }}{% endif %}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <i class="fas fa-car-side"></i>
+                                    <span class="font-weight-bold ml-2">Bil</span>
+                                </div>
+                                <div class="col-12 col-md-7">
+                                    {% if driver is not null %}
+                                        {% if user.getUserId() == driver.getUserId() %}
+                                            {% if driver.getVehicles()|length > 1 %}
+                                                <ul class="navbar-nav">
+                                                    <li class="nav-item dropdown">
+                                                        <a class="nav-link dropdown-toggle py-0" href="#" id="trip-vehicle-dropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            {{ driver.getVehicles()[0].getInfo() }}
+                                                        </a>
+                                                        <div class="dropdown-menu" aria-labelledby="trip-vehicle-dropdown">
+                                                            {% for vehicle in driver.getVehicles() %}
+                                                                <a class="dropdown-item" href="#" data-vehicle-id="{{ vehicle.getVehicleId() }}">{{ vehicle.getInfo() }}</a>
+                                                                {% if not loop.last %}
+                                                                    <div class="dropdown-divider"></div>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            {% else %}
+                                                <span>{{ driver.getVehicles()[0].getInfo() }}</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span>{{ driver.getVehicles()[0].getInfo() }}</span>
+                                        {% endif %}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-12 col-md-5">
+                                    <i class="far fa-heart"></i>
+                                    <span class="font-weight-bold ml-2">Preferanser</span>
+                                </div>
+
+                                <div class="col-12 col-md-7">
+                                    <div id="trip-prefs">
+                                        {% set isDriver = trip.getDriver().getUserId() == user.getUserId() %}
+                                        <ul class="list-unstyled mb-1{% if prefs|length < 1 %} d-none{% endif %}" id="trip-pref-list">
+                                        {% if prefs|length > 0 %}
+                                                {% for pref in prefs %}
+                                                    {% set allowed = pref.getIsActive() %}
+                                                    <li data-pref-id="{{ pref.getPrefId() }}" data-pref-value="{{ pref.getIsActive() }}">
+                                                        <i class="fas {% if allowed %}fa-check{% else %}fa-ban{% endif %} mr-2 text-{% if allowed %}success{% else %}danger{% endif %}" data-toggle="tooltip" data-placement="top"
+                                                           title="{{ pref.getPrefDescription() }} i bilen er {% if not allowed %}ikke{% endif %} tillatt">
+                                                        </i>
+                                                        <span>
+                                                            {{ pref.getPrefDescription() }}
+                                                        </span>
+                                                    </li>
+                                                {% endfor %}
+                                        {% endif %}
+                                            <li class="d-none" id="trip-list-item-template">
+                                                <div class="custom-control custom-checkbox mx-0">
+                                                    <input type="checkbox" class="custom-control-input">
+                                                    <label class="custom-control-label not-selectable cursor-pointer"></label>
+                                                    <button type="button" class="close" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                            </li>
+                                        </ul>
+                                        {% if not isDriver %}
+                                            <span>-</span>
+                                        {% endif %}
+
+                                        {% if isDriver %}
+                                            <div class=" px-0">
+                                                <div class="row">
+
+                                                    <span class="cursor-pointer col-12 col-lg-3 small my-sm-1 my-md-auto" id="edit-prefs-btn">
+                                                        Rediger
+                                                    </span>
+
+                                                    <div class="d-none dropdown col-12 col-lg-3 my-sm-1 my-md-auto" id="add-prefs-btn">
+                                                        <span class="dropdown-toggle small cursor-pointer" id="add-pref-dropdown-button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            Legg til
+                                                        </span>
+                                                        <div class="dropdown-menu" id="add-pref-dropdown" aria-labelledby="add-pref-dropdown-button">
+                                                            {%  for pref in allPrefs %}
+                                                                <a href="#" class="dropdown-item add-pref" data-pref-id="{{ pref.getPrefId() }}">{{ pref.getPrefDescription() }}</a>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+
+                                                    <span class="d-none cursor-pointer col-12 col-lg-3 small my-sm-1 my-md-auto" id="cancel-prefs-btn">
+                                                        Avbryt
+                                                    </span>
+
+                                                    <span class="d-none cursor-pointer col-12 col-lg-3 small my-sm-1 my-md-auto" id="save-prefs-btn">
+                                                        Lagre
+                                                    </span>
+                                                </div>
+                                            </div>
+
+
+                                        {% endif %}
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="col-sm-12 col-md-4 px-0 mx-0">
+                <div class="card p-0 shadow-md border-0 mb-3">
+                    <div class="card-header p-3 py-sm-4 bg-white">
+                        <div class="justify-content-center align-content-center">
+                            <h5 class="mb-0 card-title font-weight-bold not-selectable">Medreisende</h5>
+                        </div>
+                    </div>
+                    {% set passengers = trip.getPassengers() %}
+                    <div class="card-body {% if passengers is not empty %}p-0{% endif %}">
+                        {% set passengers = trip.getPassengers() %}
+                        {% if passengers is empty %}
+                            <span>Ingen medreisende</span>
+                        {% else %}
+                            {% for user in trip.getPassengers() %}
+                                <div class="d-flex align-items-center py-3 cursor-pointer">
+                                    <img src="img/avatar-placeholder.svg"
+                                         class="rounded-circle col-2 col-sm-4 col-lg-3">
+                                    <div class="col-10 col-sm-8 col-md-9 align-middle">
+                                        <h5 class="mb-0 text-truncate">{{ user.getName() }} {{ user.getSurName() }}</h5>
+                                        <a href="./infoOmMedreisende.php?user_id={{ user.getUserId() }}">
+                                            <small class="mt-0 text-muted">Vis profil</small>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+    <div class="modal fade" style="padding-top: 120px" id="choosenTrip">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                {% if userAssignedToTrip and trip.getPassengers().length() <= 1 %}
+                    <div class="modal-body">
+                        <h6>Ønsker du å melde deg av denne reisen?</h6>
+                        <h6>Reisen vil bli slettet</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" id="delete" class="btn btn-default ml-auto" name="delTrip">Ja</button>
+                        <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">lukk</button>
+                    </div>
+
+                {% elseif userAssignedToTrip %}
+                <div class="modal-body">
+                    <h6>Ønsker du å melde deg av denne reisen?</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="remove" class="btn btn-default ml-auto" name="delTrip">Ja</button>
+                    <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">lukk</button>
+                </div>
+                {% else %}
+                <div class="modal-body">
+                    <h6>Ønsker du å melde deg på denne reisen?</h6>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="new" class="btn btn-default ml-auto" name="newTrip">Ja</button>
+                    <button type="button" class="btn btn-default mr-auto" data-dismiss="modal">lukk</button>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="driverModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                    <div class="modal-body">
+                        <h6>Du har ingen bil knyttet til brukeren din</h6>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default ml-auto mr-auto" data-dismiss="modal">lukk</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block bodyscripts %}
+    <script src="js/tripdetails.js"></script>
+    <script src="js/driver.js"></script>
+    <script src="js/notification.js"></script> {# testing #}
+{% endblock %}

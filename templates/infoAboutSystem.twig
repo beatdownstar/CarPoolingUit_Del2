@@ -1,0 +1,39 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+
+        <div class="container px-0">
+
+            <section class="col-sm-12 col-md-8 px-0 px-sm-4 rounded">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+
+                    <div class="col-md-12 p-3 py-sm-4 px-sm-10 bg-white">
+                        <h1 class="pl-3 pb-3">Ofte stilte spørsmål</h1>
+
+                        {% for quest in questions %}
+                          <div class="mt-2">
+                        <button class="accordion">{{ quest.question }}</button>
+                        <div class="panel">
+                            <p>{{ quest.answer }}</p>
+                        </div>
+
+                        </div>
+                         {% endfor %}
+
+                    </div>l
+                </div>
+            </section>
+        </div>
+
+    </div>
+
+    <div class="mt-4">
+{% endblock %}
+
+         {% block bodyscripts %}
+
+             <script src="js/FAQ.js"></script>
+
+         {% endblock %}

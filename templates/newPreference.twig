@@ -1,0 +1,59 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+<div class="mt-4">
+    <div class="container px-0">
+            <section class="col-sm-12 col-md-8">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h1 class="mb-0">
+                           Opprett preferanse
+                        </h1>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body pb-0">
+                        <form action="newPreference.php" method="post">
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Tilgjengelige preferanser</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for pref in prefs %}
+
+                                    <tr class="prefInfo">
+                                        <td>{{ pref.prefDescription }}</td>
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                            <div class="form-group row">
+                                <div class="col-8">
+                                <input type="text" class="form-control input-lg" name="newPrefDescription" placeholder="Oppgi ny preferanse">
+                                </div>
+                                <div class="col-2">
+                                <input type="submit" class="btn btn-primary" name="newPreference" value="Opprette" >
+                                </div>
+                                <div class="col">
+                                    <button type="button" class="btn btn-secondary"><a href="administratorTools.php" class="linkButton">Tilbake</a></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+</div>
+
+{% endblock %}
+
+{% block bodyscripts %}
+    <script src="js/dataTables.js"></script>
+{% endblock %}
+

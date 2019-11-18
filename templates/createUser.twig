@@ -1,0 +1,49 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+        <div class="container px-0">
+            <section class="col-sm-12 col-md-8">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h1 class="mb-0">
+                            Opprett bruker
+                        </h1>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body pb-0">
+                        <form method="post">
+                            <div class="form-group form-inline">
+                                <input type="text" class="form-control col px-6" placeholder="Fornavn" name="firstName" required/>
+                                <input type="text" class="form-control ml-2 col-6" placeholder="Etternavn" name="surName" required/>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Email" name="email" required/>
+                            </div>
+                            <br />
+                            <div class="form-group form-inline">
+                                <input type="password" class="form-control col px-6" placeholder="Passord" name="password" required/>
+                                <input type="password" class="form-control ml-2 col-6" placeholder="Gjenta passord" name="rePassword" required/>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control" name="userType">
+                                    <option>Velg brukertype</option>
+                                    {% for userType in userTypes %}
+                                    <option value="{{ userType.getType_id() }}">{{ userType.getType() }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <br />
+                            <div class="form-group">
+                                <button type="button" class="btn btn-secondary" name="username"><a href="administratorTools.php" class="linkButton">Tilbake</a></button>
+                                <button type="submit" class="btn btn-primary" name="enter">Opprett</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

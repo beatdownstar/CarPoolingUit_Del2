@@ -1,0 +1,5 @@
+{% if (messages is defined and messages is not null) and (user is defined and user is not null)%}
+    {% for message in messages %}
+        <li class='chat-message-{{ message.getAuthorId() == user.getUserId() ? 'self' : 'other' }}' data-toggle="tooltip" title="{{ message.getFormattedTimestamp() }}" data-author-id="{{ message.getAuthorId() }}" data-author-name="{{ message.getAuthorName() }}" id='message-{{ message.getId() }}'>{{ message.getMessage() }}</li>
+    {% endfor %}
+{% endif %}

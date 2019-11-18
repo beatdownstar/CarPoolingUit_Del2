@@ -1,0 +1,120 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+        <div class="container px-0">
+            <h1 class="pl-3 pb-3">Administrator Verktøy</h1>
+            {% if userCreated %}
+                <div class="ml-3 col-9 alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Success!</strong> Bruker ble opprettet.
+                </div>
+            {% endif %}
+            <section class="col-sm-12 col-md-4">
+                <div class="d-inline-flex">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h2 class="mb-0">
+                            Brukere
+                        </h2>
+                        <hr class="my-0">
+                        <div class="card-body pb-0 pl-0">
+                            <div class="adminCard pl-0">
+                                <div class="input-group">
+                                    <i class="fas fa-user"></i><a class="adminLink" href="createUser.php"><h6 class="pl-2">Opprett bruker</h6></a>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-wrench"></i><a class="adminLink" href="editUser.php"><h6 class="pl-2">Rediger bruker</h6></a>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-user-lock"></i><a class="adminLink" href="banUser.php"><h6 class="pl-1">Blokker/Aktiver bruker</h6></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0 ml-5">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h2 class="mb-0">
+                            Reiser
+                        </h2>
+                        <hr class="my-0">
+                        <div class="card-body pb-0 pl-0">
+                            <div class="adminCard pl-0">
+                                <div class="input-group">
+                                    <i class="fas fa-chart-line"></i><a class="adminLink" href="travelStatistics.php"><h6 class="pl-2">Statistikk</h6></a>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-car"></i><a class="adminLink" href="editTrips.php"><h6 class="pl-2">Rediger reise</h6></a>
+                                </div>
+                                <div class="input-group">
+                                    <i class="fas fa-car-crash"></i><a class="adminLink" href="#"><h6 class="pl-1">Slett reise</h6></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="d-inline-flex mt-5">
+                    <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                        <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                            <h2 class="mb-0">
+                                Preferanser
+                            </h2>
+                            <hr class="my-0">
+                            <div class="card-body pb-0 pl-0">
+                                <div class="adminCard pl-0">
+                                    <div class="input-group">
+                                        <i class="fas fa-heart"></i><a class="adminLink" href="newPreference.php"><h6 class="pl-2">Opprett preferanse</h6></a>
+                                    </div>
+                                    <div class="input-group">
+                                        <i class="fas fa-heart-broken"></i><a class="adminLink" href="editPreference.php"><h6 class="pl-2">Rediger preferanse</h6></a>
+                                    </div>
+                                    <div class="input-group">
+                                        <i class="fas fa-users"></i><a class="adminLink" href="userTypesSettings.php?userTypeId=1"><h6 class="pl-1">Brukerrettigheter</h6></a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0 ml-5">
+                        <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                            <h2 class="mb-0">
+                                Generelt
+                            </h2>
+                            <hr class="my-0">
+                            <div class="card-body pb-0 pl-0">
+                                <div class="adminCard pl-0">
+                                    <div class="input-group">
+                                        <i class="fas fa-envelope"></i><a class="adminLink" href="usersFeedbacks"><h6 class="pl-2">Tilbakemeldinger</h6></a>
+                                    </div>
+                                    <div class="input-group">
+                                        <i class="fas fa-sticky-note"></i><a class="adminLink" href="reportedUsers.php"><h6 class="pl-2">Rapporterte brukere</h6></a>
+                                    </div>
+                                    <div class="input-group">
+                                        <i class="fas fa-exclamation-circle"></i><a class="adminLink" href="#"><h6 class="pl-2">Sikkerhet</h6></a>
+                                    </div>
+                                    <div class="input-group">
+                                        <i class="fa fa-ban"></i><a class="adminLink" href="createReason.php"><h6 class="pl-2">Opprett blokkering grunn</h6></a>
+                                    </div>
+                                    <div class="input-group">
+                                        <i class="fa fa-edit"></i><a class="adminLink" href="editReason.php"><h6 class="pl-2">Rediger blokkering grunn</h6></a>
+                                    </div>
+                                    <div class="input-group">
+                                        <i class="fa fa-question"></i><a class="adminLink" href="createQuestion.php"><h6 class="pl-2">Opprett ofte stilt spørsmål</h6></a>
+                                    </div>
+                                    <div class="input-group">
+                                        <i class="fa fa-question-circle"></i><a class="adminLink" href="editQuestion.php"><h6 class="pl-2">Rediger ofte stilt spørsmål</h6></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+{% endblock %}

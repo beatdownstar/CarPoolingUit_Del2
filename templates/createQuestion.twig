@@ -1,0 +1,71 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+        <div class="container px-0">
+            <section class="col-sm-12 col-md-12">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h1 class="mb-0">
+                            Opprett ofte stilt spørsmål
+                        </h1>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body pb-0">
+                        <form action="createQuestion.php" method="post">
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Tilgjengelige spørsmål</th>
+                                    <th>Tilgjengelige svar</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for quest in questions %}
+
+                                    <tr class="questionInfo">
+                                        <td>{{ quest.question }}</td>
+                                        <td>{{ quest.answer }}</td>
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                            <div class="form-group row">
+                                <div class="col">
+                                    <textarea id="questionText" maxlength="200" class="form-control input-lg"
+                                              name="questionText" placeholder="Oppgi spørsmål" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col">
+                                    <textarea id="answerText" maxlength="400" class="form-control input-lg"
+                                              name="answerText" placeholder="Oppgi svar" required></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group ">
+
+                                    <input type="submit" class="btn btn-primary" name="newQuestion" value="Opprette" >
+                                    <button type="button" class="btn btn-secondary" name="back"><a href="administratorTools.php" class="linkButton">Tilbake</a></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+<div class="mt-4">
+
+{% endblock %}
+
+{% block bodyscripts %}
+    <script src="js/dataTable.js"></script>
+{% endblock %}
+

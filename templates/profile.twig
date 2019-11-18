@@ -1,0 +1,511 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+        <div class="container px-0">
+
+            <section class="col-sm-12 col-md-8 px-0 px-sm-4 rounded">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+
+                    <div class="card-header p-3 py-sm-4 bg-white">
+                        <h4 class="mb-0 card-title font-weight-bold not-selectable">
+                            Brukerprofil
+                        </h4>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body pb-0">
+                        <ul class="nav nav-tabs" id="profile_nav">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tab1">Bruker
+                                    data</a></li>
+                            <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tab2">Kjøretøy</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="py-2 px-3 px-sm-5 py-sm-6">
+
+                        <div class="tab-pane fade show active" role="tabpanel" id="tab1">
+
+                            <div id="profile-page-1">
+
+                                <div class="form-group clear">
+
+                                    <img src="showUserImage.php?user_id={{ profile.UserId() }}"
+                                         class="rounded mx-auto d-block" alt="..." width="200"
+                                         height="200">
+                                </div>
+                                <div class="form-group clear">
+                                    <div class="row">
+                                        <label class="col-lg-3 font-weight-bold text-lg-right my-auto">
+                                            Fornavn
+                                        </label>
+
+                                        <div class="col-lg-7 relative text-justify">
+                                            {{ profile.name }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group clear mb-4">
+                                    <div class="row">
+                                        <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                            Etternavn
+                                        </label>
+                                        <div class="col-lg-7 relative text-justify">
+                                            {{ profile.surname }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group clear mb-4">
+                                    <div class="row">
+                                        <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                            Campus
+                                        </label>
+                                        <div class="col-lg-7 relative text-justify">
+                                            {% for campus in points %}
+                                                {% if profile.campusId == campus.getPointId %}
+                                                    {% set campus_splitted = campus.PointName|split(' ') %}
+                                                    {{ campus_splitted[1] }}
+
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group clear mb-4">
+                                    <div class="row">
+                                        <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                            E-post
+                                        </label>
+                                        <div class="col-lg-7 relative text-justify">
+                                            {{ profile.epost }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group clear mb-4">
+                                    <div class="row">
+                                        <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                            Telefonnummer
+                                        </label>
+                                        <div class="col-lg-7 relative text-justify">
+                                            {{ profile.TelNumber }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group clear mb-4">
+                                    <div class="row">
+                                        <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                            Bruker type
+                                        </label>
+                                        <div class="col-lg-7 relative text-justify">
+                                            {{ profile.UserTypeId }}
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="p-4 mb-auto float-right"><!---->
+                                    <button class="btn btn-outline-secondary mr-0 mt-0 pull-right"
+                                            id="profile-data-btn-change">
+                                        Rediger
+                                    </button>
+
+                                </div>
+                            </div>
+
+
+                            <div id="profile-page-1-red" class="d-none">
+                                <form method="post" action="profile.php" enctype="multipart/form-data"
+                                      id="changeProfileForm">
+                                    <div class="form-group clear">
+
+                                        <img src="showUserImage.php?user_id={{ profile.UserId() }}"
+                                             class="rounded mx-auto d-block" alt="..." width="200"
+                                             height="200">
+
+                                    </div>
+
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <div class="col">
+                                            </div>
+                                            <div class="col-7">
+
+                                                <input type="file" class="custom-file-input" id="inputBrukerPhoto"
+                                                       name="photo">
+                                                <label class="custom-file-label" for="inputBrukerPhoto">Choose
+                                                    file</label>
+                                            </div>
+                                            <div class="col">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if profile.getFeideUser()!=true %}
+                                    <div class="form-group clear mb6">
+
+                                        <div class="row">
+                                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto">
+                                                Fornavn
+                                            </label>
+                                            <div class="col-lg-7 relative">
+                                                <input type="text" class="form-control input-lg"
+                                                       value="{{ profile.name }}" name="name" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                Etternavn
+                                            </label>
+                                            <div class="col-lg-7 relative">
+                                                <input type="text" class="form-control input-lg"
+                                                       value="{{ profile.surname }}" name="surname" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                Campus
+                                            </label>
+                                            <div class="col-lg-7 relative">
+                                                <select class="custom-select" id="inputGroupSelect01" name="campus_id">
+                                                    <option selected value= {{ profile.campusId }}>
+                                                        {% for campus in points %}
+                                                            {% if profile.campusId == campus.getPointId %}
+                                                                {% set campus_splitted = campus.PointName|split(' ') %}
+                                                                {{ campus_splitted[1] }}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </option>
+                                                    {% for point in points %}
+                                                        {% if 'Campus' in point.PointName %}
+                                                            {% set campus_splitted = point.PointName|split(' ') %}
+                                                            {{ campus_splitted[1] }}
+                                                            <option value={{ point.getPointId }}> {{ campus_splitted[1] }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if profile.getFeideUser()!=true %}
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                E-post
+                                            </label>
+                                            <div class="col-lg-7 relative text-justify">
+                                                {{ profile.epost }}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                Nytt passord
+                                            </label>
+                                            <div class="col-lg-7 relative">
+                                                <input type="password" class="form-control input-lg"
+                                                       name="password" id="changePass">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                Gjenta nytt passord
+                                            </label>
+                                            <div class="col-lg-7 relative">
+                                                <input type="password" class="form-control input-lg"
+                                                       name="passwordRepeat" id="changePassRepeat">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                Telefonnummer
+                                            </label>
+                                            <div class="col-lg-7 relative">
+                                                <input type="text" pattern="[0-9]+" maxLength=8
+                                                       class="form-control input-lg"
+                                                       value="{{ profile.TelNumber }}" name="telnumber" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h6 id="error"></h6>
+                                    <div class="p-4 mb-auto float-right">
+
+                                        <button class="btn btn-outline-secondary mr-0 mt-0 pull-right"
+                                                id="profile-data-btn-updateUserDataGoBack" type="button">
+                                            Tilbake
+                                        </button>
+
+                                        <button class="btn btn-outline-secondary mr-0 mt-0 pull-right"
+                                                id="profile-data-btn-save" name="updateUserDataSubmit" type="submit">
+                                            Lagre
+                                        </button>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                        <div class="tab-pane fade" role="tabpanel" id="tab2">
+
+                            <div id="profile-page-2">
+
+                                {% if cars!=0 %}
+
+                                    {% if checkUserCars==true %}
+
+                                        <h1>Du har ikke Bil</h1>
+
+                                    {% endif %}
+
+                                    {% for car in cars %}
+
+                                        {% if car.Hidden()!=1 %}
+                                            <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+
+                                                <div class="form-group clear">
+
+                                                    <img class="img-fluid p-3 p-md-5 mx-auto d-block"
+                                                         src="showCarImage.php?vehicle_id={{ car.VehicleId() }}" alt="{{ car.info }}">
+                                                </div>
+
+                                                <div class="form-group clear">
+                                                    <div class="row">
+                                                        <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                            Bil info
+                                                        </label>
+                                                        <div class="col-lg-7 relative text-justify">
+                                                            {{ car.info }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="form-group clear mb-4">
+                                                    <div class="row">
+                                                        <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                            Antall seter
+                                                        </label>
+                                                        <div class="col-lg-7 relative text-justify">
+                                                            {{ car.NumberOfSeats }}
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="p-4 mb-auto float-right"><!---->
+
+                                                    <input type="hidden" class="form-control input-lg"
+                                                           name="vehicle_id_for_choise"
+                                                           value="{{ car.VehicleId() }}">
+
+                                                    <div class="p-4 mb-auto float-right"><!---->
+
+                                                        <button class="btn btn-outline-secondary mr-0 mt-0 pull-right profile-car-btn-change"
+                                                                data-vehicle-id="{{ car.VehicleId() }}">
+                                                            Rediger
+                                                        </button>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        {% endif %}
+
+                                    {% endfor %}
+
+                                {% else %}
+
+                                    <h1>Du har ikke Bil</h1>
+
+                                {% endif %}
+
+                                <div class="p-4 mb-auto float-right"><!---->
+                                    <button class="btn btn-outline-secondary mr-0 mt-0 pull-right"
+                                            id="profile-car-btn-addNewCar">
+                                        Legg til Bil
+                                    </button>
+
+
+                                </div>
+                            </div>
+
+
+                            {% for car in cars %}
+                                <div id="edit-car-{{ car.VehicleId() }}" class="d-none">
+
+
+                                    <form method="post" action="profile.php" enctype="multipart/form-data"
+                                          id="changeCarForm">
+                                        <div class="form-group clear">
+
+                                            <img class="img-fluid p-3 p-md-5 mx-auto d-block"
+                                                 src="showCarImage.php?vehicle_id={{ car.VehicleId() }}" alt="{{ car.info }}">
+                                        </div>
+
+                                        <div class="form-group clear mb-4">
+                                            <div class="row">
+                                                <div class="col">
+                                                </div>
+                                                <div class="col-7">
+                                                    <input type="file" class="custom-file-input center"
+                                                           id="inputCarPhoto" name="photo">
+                                                    <label class="custom-file-label" for="inputCarPhoto">Choose
+                                                        file</label>
+                                                </div>
+                                                <div class="col">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group clear mb-4">
+                                            <div class="row">
+                                                <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                    Bil info
+                                                </label>
+                                                <div class="col-lg-7 relative">
+                                                    <input type="text" class="form-control input-lg" name="info"
+                                                           size="200"
+                                                           value="{{ car.info }}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group clear mb-4">
+                                            <div class="row">
+                                                <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                    Antall seter
+                                                </label>
+                                                <div class="col-lg-7 relative">
+                                                    <input type="number" class="form-control input-lg"
+                                                           name="number_of_seats"
+                                                           value="{{ car.NumberOfSeats }}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" class="form-control input-lg" name="vehicle_id"
+                                               value="{{ car.VehicleId() }}">
+
+                                        <div class="p-4 mb-auto float-right"><!---->
+
+                                            <button class="btn btn-outline-secondary mr-0 mt-0 pull-right profile-car-btn-updateUserCarGoBack"
+                                                    data-vehicle-id="{{ car.VehicleId() }}" type="button">
+                                                Tilbake
+                                            </button>
+
+                                            <button class="btn btn-outline-secondary mr-0 mt-0 pull-right"
+                                                    id="profile-car-btn-save" name="updateUserCarSubmit" type="submit">
+                                                Lagre
+                                            </button>
+
+                                            <button class="btn mr-0 mt-0 pull-right btn-danger"
+                                                    name="hideUserCarSubmit" type="submit">
+                                                Fjerne bil
+                                            </button>
+
+                                        </div>
+                                    </form>
+
+                                </div>
+                            {% endfor %}
+
+                            <div id="profile-page-2-addCar" class="d-none">
+
+
+                                <form method="post" action="profile.php" enctype="multipart/form-data" id="newCarForm">
+                                    <div class="form-group clear">
+
+                                        <img class="rounded mx-auto d-block" src="img/no-image-icon-6.png" alt="..."
+                                             width="300"
+                                             height="300">
+                                    </div>
+
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <div class="col">
+                                            </div>
+                                            <div class="col-7">
+                                                <input type="file" class="custom-file-input center" id="inputCarPhoto"
+                                                       name="photo">
+                                                <label class="custom-file-label" for="inputCarPhoto">Choose file</label>
+                                            </div>
+                                            <div class="col">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                Bil info
+                                            </label>
+                                            <div class="col-lg-7 relative">
+                                                <input type="text" class="form-control input-lg" name="info" size="200"
+                                                       placeholder="Skiv inn Bil info" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group clear mb-4">
+                                        <div class="row">
+                                            <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                                Antall seter
+                                            </label>
+                                            <div class="col-lg-7 relative">
+                                                <input type="number" class="form-control input-lg"
+                                                       name="number_of_seats"
+                                                       placeholder="Skiv inn antall seter" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <input type="hidden" class="form-control input-lg" name="user_id"
+                                           value="{{ profile.userId }}">
+
+                                    <div class="p-4 mb-auto float-right"><!---->
+
+                                        <button class="btn btn-outline-secondary mr-0 mt-0 pull-right"
+                                                id="profile-car-btn-addNewCarGoBack" type="button">
+                                            Tilbake
+                                        </button>
+
+                                        <button class="btn btn-outline-secondary mr-0 mt-0 pull-right"
+                                                id="profile-car-btn-savenew" name="newUserCarSubmit" type="submit">
+                                            Opprett
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+            </section>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+    {% block bodyscripts %}
+
+        <script src="js/ChangeProfile.js"></script>
+
+    {% endblock %}

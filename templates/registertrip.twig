@@ -1,0 +1,214 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+<div class="mt-4">
+    <div class="container mx-auto row">
+        <section class="col-sm-12 col-md-8 px-0 mx-0 pr-md-3">
+            <div class="card p-0 shadow-md border-0">
+                <div class="card-header p-3 py-sm-4 bg-white">
+                    <h4 id="trip-card-title" class="mb-0 card-title font-weight-bold not-selectable">
+                        Rute
+                    </h4>
+                </div>
+                <div class="card-body pb-0">
+                <ul class="nav nav-tabs border-0 row py-2 px-3 px-sm-5 py-sm-6" id="trip-stepper">
+                    <li class="nav-item">
+                        <a data-toggle="tab" class="nav-link active border-0" href="#tab-trip-locations">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </a>
+                    </li>
+                    <hr class="my-auto flex-fill mx-2">
+                    <li class="nav-item">
+                        <a class="nav-link border-0" data-toggle="tab" href="#tab-trip-date">
+                            <i class="far fa-clock"></i>
+                        </a>
+                    </li>
+                    <hr class="my-auto flex-fill mx-2">
+                    <li class="nav-item">
+                        <a class="nav-link border-0" data-toggle="tab"  href="#tab-trip-confirm">
+                            <i class="far fa-check-circle"></i>
+                        </a>
+                    </li>
+                </ul>
+                </div>
+                <form method="post" class="px-5 px-md-4" action="registerTrip.php">
+                    <div class="py-2 px-1 px-sm-5 py-sm-6">
+                        <div class="tab-pane fade show active" role="tabpanel" id="tab-trip-locations">
+                            <div class="form-group clear">
+
+                                <div class="row">
+                                    <label class="col-lg-3 font-weight-bold text-lg-right my-auto">
+                                        Fra
+                                    </label>
+                                    <div class="col-lg-7 position-relative">
+                                        <input id="trip-input-departure" type="text" placeholder="Oppgi campus eller adresse..." class="form-control input-lg" name="tripDeparture">
+                                        <input id="trip-input-departure-id" type="hidden" name="tripDepartureId">
+                                        <input id="trip-input-departure-name" type="hidden" name="tripDepartureName">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group clear mb-4">
+                                <div class="row">
+                                    <label class="col-lg-3 font-weight-bold text-lg-right my-auto align-text-bottom">
+                                        Til
+                                    </label>
+                                    <div class="col-lg-7 relative">
+                                        <input id="trip-input-destination" type="text" placeholder="Oppgi campus eller adresse.." class="form-control input-lg" name="tripDestination">
+                                        <input id="trip-input-destination-id" type="hidden" name="tripDestinationId">
+                                        <input id="trip-input-destination-name" type="hidden" name="tripDestinationName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" role="tabpanel" id="tab-trip-date">
+
+                           {% include 'calendarwidget.twig' %}
+
+
+                            <input id="trip-input-date" type="hidden" class="form-control input-lg" name="tripDate">
+
+                            <div class="form-group clear my-4">
+                                <div class="row px-lg-5">
+                                    <div class="col-12 col-lg-6">
+                                        <label class="font-weight-bold text-lg-right my-auto align-text-bottom">
+                                            Klokkeslett
+                                        </label>
+                                        <div>
+                                            <div class="input-group">
+                                                <select id="trip-select-hour" class="custom-select col-3 col-lg-5">
+                                                    <option selected value="00">00</option>
+                                                    <option value="01">01</option>
+                                                    <option value="02">02</option>
+                                                    <option value="03">03</option>
+                                                    <option value="04">04</option>
+                                                    <option value="05">05</option>
+                                                    <option value="06">06</option>
+                                                    <option value="07">07</option>
+                                                    <option value="08">08</option>
+                                                    <option value="09">09</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                    <option value="13">13</option>
+                                                    <option value="14">14</option>
+                                                    <option value="15">15</option>
+                                                    <option value="16">16</option>
+                                                    <option value="17">17</option>
+                                                    <option value="18">18</option>
+                                                    <option value="19">19</option>
+                                                    <option value="20">20</option>
+                                                    <option value="21">21</option>
+                                                    <option value="22">22</option>
+                                                    <option value="23">23</option>
+
+                                                </select>
+                                                <select id="trip-select-min" class="custom-select col-3 col-lg-5">
+                                                    <option selected value="00">00</option>
+                                                    <option value="05">05</option>
+                                                    <option value="10">10</option>
+                                                    <option value="15">15</option>
+                                                    <option value="20">20</option>
+                                                    <option value="25">25</option>
+                                                    <option value="30">30</option>
+                                                    <option value="35">35</option>
+                                                    <option value="40">40</option>
+                                                    <option value="45">45</option>
+                                                    <option value="50">50</option>
+                                                    <option value="55">55</option>
+                                                </select>
+                                            </div>
+                                            <input id="trip-input-time" type="hidden" class="form-control input-lg" name="tripTime" required="required">
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="tab-pane fade" role="tabpanel" id="tab-trip-confirm">
+                            <div class="form-group clear">
+                                <div id="trip-output">
+                                    <div id="trip-output-places">
+                                        <span  id="trip-output-departure"></span>
+                                        <i class="fas fa-long-arrow-alt-right text-muted"></i>
+                                        <span id="trip-output-destination"></span>
+                                    </div>
+                                    <div>
+                                        <span class="text-muted" id="trip-output-datetime"></span>
+                                    </div>
+                                </div>
+                                <div id="trip-output-invalid">
+                                    <span class="text-danger">
+                                        Vennligst oppgi all påkrevd informasjon om reisen:
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4 mb-auto float-right"><!---->
+                        <button class="d-none btn btn-secondary mr-0 mt-0 pull-right" id="register-trip-btn-prev" type="button">
+                            Forrige
+                        </button>
+                        <button class="btn btn-primary ml-1 mt-0 pull-right" id="register-trip-btn-next" type="button">
+                            Neste
+                        </button>
+
+                        <button class="d-none btn btn-success ml-1 mt-0 pull-right" id="register-trip-btn-submit" type="submit" name="tripSubmit" disabled="disabled">
+                            Registrer
+                        </button>
+                    </div>
+
+                </form>
+
+
+            </div>
+        </section>
+
+        <section class="col-sm-12 col-md-4 pl-md-3 d-none d-md-block">
+            <div class=" p-2 card shadow-md d-flex align-items-stretch">
+                <div id="map" style="height: 15em;"></div>
+                <div>
+                    <div id="map-no-route" class="mt-3">
+                        <span>Ingen rute valgt</span>
+                    </div>
+                    <div  id="map-route"  class="mt-3 d-none">
+                        <span id="map-from"></span>
+                        <i class="fas fa-long-arrow-alt-right text-muted"></i>
+                        <span id="map-to"></span>
+                    </div>
+                    <div id="map-no-date">
+                        <span class="text-muted">Ingen dato valgt</span>
+                    </div>
+                    <div id="map-date-container" class="d-none">
+                        <span class="text-muted" id="map-date"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block bodyscripts %}
+    {#<script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBc21nTEu1wk_8q5DaaRv7metwRGhl3ZNg&callback=initMap">
+    </script>#}
+    {#<script src="js/googleMaps.js"></script>#}
+
+    <script src="js/datepicker.js"></script>
+    <script>
+        const pointsJson = JSON.parse('{% if pointsJson is defined %}{{ pointsJson|json_encode|raw }}{% else %}[]{% endif %}');
+    </script>
+    {#<script src="js/tripAutoComplete.js"></script>#}
+
+    <script src="js/googleAutoComplete.js"></script>
+    <script src="js/RegisterTrip.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBc21nTEu1wk_8q5DaaRv7metwRGhl3ZNg&libraries=places&callback=activatePlacesSearch"></script>
+
+{% endblock %}

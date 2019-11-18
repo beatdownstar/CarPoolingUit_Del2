@@ -1,0 +1,95 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+        <div class="container px-0">
+            <div class="col-10">
+            {% if ban %}
+                <div class="ml-3 col-9 alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    Brukeren {{ epost }} ble blokkert.
+                </div>
+            {% endif %}
+            {% if activate %}
+                <div class="ml-3 col-9 alert alert-success alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    Brukeren {{ epost }} ble aktivert.
+                </div>
+            {% endif %}
+            </div>
+            <section class="col-sm-12 col-md-8">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h1 class="mb-0">
+                            Blokker/aktiver bruker
+                        </h1>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body pb-0">
+
+                            <table class="table table-bordered table-hover"  id="mytable">
+                                <thead>
+                                <tr>
+                                    <th>Fornavn</th>
+                                    <th>Etternavn</th>
+                                    <th>Epost</th>
+                                    <th>Status</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in users %}
+
+                                    <tr class="bannedUserInfo" data-id="{{ user.userId }}">
+                                        <td>{{ user.name }}</td>
+                                        <td>{{ user.surname }}</td>
+                                        <td>{{ user.epost }}</td>
+                                        <td>{% if user.bannedUser==1 %}
+                                                Blokkert
+                                            {% else %}
+                                                Aktiv
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        <form action="banUser.php" method="post">
+                            <div class="form-group">
+                                <label>Oppgi grunnen til å blokkere</label>
+                                <select class="custom-select" name="reasonToBan">
+
+                                    {% for reason in reasons %}
+
+                                        <option>{{ reason.ReasonDescription }}</option>
+
+                                    {% endfor %}
+
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="hidden" id="fillId" value="" name="user_id"/>
+                                <input type="hidden" id="fillepost" value="" name="epostToBan"/>
+                                <button name="banUser" class="btn btn-primary disabled" id="chooseBannedUser" type="submit">Blokker bruker</button>
+                                <button name="activateUser" class="btn btn-primary disabled " id="chooseAktivUser" type="submit">Aktiver bruker</button>
+                                <button type="button" class="btn btn-secondary float-lg-right"><a href="administratorTools.php" class="linkButton">Tilbake</a></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block bodyscripts %}
+    <script src="js/dataTables.js"></script>
+
+{% endblock %}

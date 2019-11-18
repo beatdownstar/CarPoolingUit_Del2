@@ -1,0 +1,96 @@
+{% extends 'main.twig' %}
+
+{% block content %}
+
+    <div class="mt-4">
+        <div class="container px-0">
+            <section class="col-sm-12 col-md-8">
+                <div class="card border-bottom-1 br1-bottom-sm p-0 mb8 mb6-md shadow-md border-0">
+                    <div class="p-3 py-sm-4 px-sm-5 bg-white">
+                        <h1 class="mb-0">
+                            Rediger grunn
+                        </h1>
+                    </div>
+                    <hr class="my-0">
+                    <div class="card-body pb-0">
+                        <form action="editReason.php" method="post">
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Tilgjengelige grunner</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for reason in reasons %}
+
+                                    <tr class="reasonInfo" data-id="{{ reason.ReasonId }}">
+                                        <td>{{ reason.reasonDescription }}</td>
+                                    </tr>
+
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                            <div class="form-group">
+                                <input type="hidden" id="fillReasonId" value="" name="reason_id"/>
+                                <input type="hidden" id="fillReasonDescription" value="" name="reasonToEdit"/>
+                                <button type="submit" name="editReason" class="btn btn-primary disabled" id="chooseReason">Regider</button>
+                                <button type="submit" name="deleteReason" class="btn btn-danger disabled" id="deleteReason">Slett</button>
+                                <button type="button" class="btn btn-secondary float-lg-right"><a href="administratorTools.php" class="linkButton">Tilbake</a></button>
+                            </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="editReasonModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <h6 style="text-align: center">Rediger grunn</h6>
+
+                <form action="editReason.php" method="post">
+                    <input type="text" class="form-control input-lg"
+                           value="{{ description }}" name="editReasonDescription" required>
+                    <input type="hidden" name="reasonIdModal" value="{{ reason_id }}"/>
+                </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary ml-auto mr-auto" name="saveReason">Lagre</button>
+                        <button type="button" class="btn btn-primary ml-auto mr-auto" data-dismiss="modal">Lukk</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" style="padding-top: 120px" id="deleteReasonModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <form action="editReason.php" method="post">
+                        <h6 style="text-align: center">Vil du slette grunnen '{{ description }}'?</h6>
+
+                        <input type="hidden" name="reasonIdDeleteModal" value="{{ reason_id }}"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary ml-auto mr-auto" name="saveDeletedReason">Yes</button>
+                    <button type="button" class="btn btn-primary ml-auto mr-auto" data-dismiss="modal">No</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block bodyscripts %}
+    <script src="js/dataTables.js"></script>
+{% endblock %}
+
